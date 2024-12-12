@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Form - Star Kebab</title>
+    <link rel="stylesheet" href="ss.css">
+</head>
+<body>
+
+    <header class="order-header">
+        <h1>Your Order</h1>
+        <p>Customize your order, review items, and proceed to checkout.</p>
+    </header>
+
+    <section class="order-form-section">
+        <form id="orderForm" action="submit_order.php" method="POST">
+            <h2>Items in Your Cart</h2>
+            <div id="cartItems">
+                <!-- JavaScript will populate the cart items here -->
+            </div>
+            <p>Total Price: <span id="totalPrice">0</span> RS</p>
+
+            <!-- Toppings and Sauces (as previously defined) -->
+            <h2>Select Toppings</h2>
+            <div class="toppings">
+                <label><input type="checkbox" name="topping[]" value="Cheese"> Cheese</label><br>
+                <!-- Repeat for other toppings -->
+            </div>
+
+            <h2>Select Sauces</h2>
+            <div class="sauces">
+                <label><input type="radio" name="sauce" value="Garlic" required> Garlic</label><br>
+                <!-- Repeat for other sauces -->
+            </div>
+
+            <button type="submit">Confirm Order</button>
+        </form>
+    </section>
+
+    <script>
+        // Load items from localStorage
+        const cartItems = JSON.parse(localStorage.getItem('cartItems')) || [];
+        const cartItemsDiv = document.getElementById('cartItems');
+        let totalPrice = 0;
+
+        // Display each item in the order form
+        cartItems.forEach(item => {
+            const itemDiv = document.createElement('div');
+            itemDiv.className = 'cart-item';
+            itemDiv.innerHTML = `<p>${item.name} - ${item.price} RS</p>`;
+            cartItemsDiv.appendChild(itemDiv);
+            totalPrice += parseInt(item.price);
+        });
+
+        // Update the total price
+        document.getElementById('totalPrice').innerText = totalPrice;
+
+        // Clear cart items after submitting the form (optional)
+        document.getElementById('orderForm').onsubmit = function() {
+            localStorage.removeItem('cartItems');
+        };
+    </script>
+
+</body>
+</html>

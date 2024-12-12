@@ -1,0 +1,783 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Cart - STAR KEBAB</title>
+    <link rel="stylesheet" href="cart.css">
+    <link rel="icon" href="image/logo_star_png.png">
+</head>
+<body>
+
+    <section class="cart-section">
+        <h2 class="cart-title">Your Cart</h2>
+        <div id="cart-items-container" class="cart-items-container">
+            <!-- Cart items will dynamically load here -->
+        </div>
+        <div class="subtotal-section">
+            <h2>Subtotal: RS <span id="subtotal">0</span></h2>
+        </div>
+        <button class="checkout-button" onclick="openCheckoutForm()">Proceed to Checkout</button>
+    </section>
+    
+<!-- Checkout Form Modal -->
+<div id="checkout-modal" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closeCheckoutForm()">&times;</span>
+        <h2 class="modal-title">Checkout Form</h2>
+      <form id="checkout-form" action="process_order.php" method="POST" onsubmit="submitCheckoutForm(event)">
+    <div class="form-group">
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="name" class="form-input" required>
+    </div>
+    
+    <div class="form-group">
+        <label for="contact">Contact Number:</label>
+        <input type="text" id="contact" name="contact" class="form-input" pattern="^[0-9]{8}$" title="Please enter exactly 8 digits" required>
+    </div>
+    
+    <div class="form-group">
+        <label for="pickup-date">Pickup Date:</label>
+        <input type="date" id="pickup-date" name="pickup_date" class="form-input" onchange="validateDate()" required>
+    </div>
+    
+    <div class="form-group">
+        <label for="pickup-time">Pickup Time:</label>
+        <select id="pickup-time" name="pickup_time" class="form-input" required></select>
+    </div>
+
+
+
+
+<!-- QR Code and Upload Section -->
+<div class="form-group">
+    <label for="qrcode-payment">Scan the QR Code to Make Payment:</label>
+    <div class="qr-code-container">
+        <img src="image/qr-code.png" alt="QR Code" class="qr-code-image">
+    </div>
+</div>
+
+
+
+<div id="topping-selection-container" class="form-group">
+    <label for="toppings" class="form-label">Select Toppings:</label>
+    <div class="topping-options">
+        <div class="topping-option">
+            <input type="checkbox" id="extra-cheese" name="toppings[]" value="extra-cheese" data-price="10">
+            <label for="extra-cheese" class="topping-label">Extra Cheese (+RS 10)</label>
+        </div>
+        <div class="topping-option">
+            <input type="checkbox" id="egg" name="toppings[]" value="egg" data-price="20">
+            <label for="egg" class="topping-label">Add Egg (+RS 20)</label>
+        </div>
+        <div class="topping-option">
+            <input type="checkbox" id="mozzarella" name="toppings[]" value="mozzarella" data-price="40">
+            <label for="mozzarella" class="topping-label">Add Mozzarella (+RS 40)</label>
+        </div>
+        <div class="topping-option">
+            <input type="checkbox" id="hotdog" name="toppings[]" value="hotdog" data-price="45">
+            <label for="hotdog" class="topping-label">Add Hotdog (+RS 45)</label>
+        </div>
+
+        <div class="topping-option">
+            <input type="checkbox" id="salade" name="toppings[]" value="salade" data-price="55">
+            <label for="salade" class="topping-label">Add salade (+RS 75)</label>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+<div class="form-group">
+    <label for="payment-proof">Upload Payment Proof:</label>
+    <input type="file" id="payment-proof" name="payment_proof" accept="image/*" class="form-input" required>
+    <small class="form-note">Please upload a screenshot or photo of the payment confirmation.</small>
+</div>
+    
+    <div id="sauce-selection-container"></div>
+    
+    <!-- Hidden Inputs -->
+    <input type="hidden" id="menu-items" name="menu_items">
+    <input type="hidden" id="sauces" name="sauces">
+    <input type="hidden" id="subtotal-input" name="subtotal">
+    
+    
+    <!-- Terms and Conditions Checkbox -->
+    <div class="form-group">
+        <input type="checkbox" id="terms" name="terms" required>
+        <label for="terms">I agree to the <a href="terms.html" target="_blank">Terms and Conditions</a>.</label>
+    </div>
+    
+    <!-- Subtotal Display -->
+    <h2 class="form-subtotal">Subtotal: RS <span id="subtotal-display">0</span></h2>
+    
+    <!-- Submit Button -->
+    <button type="submit" class="btn">Place Order</button>
+</form>
+
+    </div>
+</div>
+
+
+<footer class="footer">
+    <p>&copy; 2024 Star Kebab. All Rights Reserved.</p>
+</footer>
+
+<script>
+
+function submitCheckoutForm(event) {
+    event.preventDefault();
+
+    // Gather menu items and sauces
+    const menuItems = cart.map(item => ({ name: item.name, price: item.price }));
+    const sauces = [];
+    cart.forEach((item, index) => {
+        const selectedSauces = [];
+        document.querySelectorAll(`[name="sauce_${index}[]"]:checked`).forEach(sauce => {
+            selectedSauces.push(sauce.value);
+        });
+        sauces.push(selectedSauces);
+    });
+
+    // Prepare form data
+    const formData = new FormData(event.target);
+    formData.set('menu_items', JSON.stringify(menuItems));
+    formData.set('sauces', JSON.stringify(sauces));
+    formData.set('subtotal', subtotalElement.textContent);
+
+    // Send AJAX request
+    fetch('process_order.php', {
+        method: 'POST',
+        body: formData,
+    })
+    .then(response => response.text())
+    .then(message => {
+        // Display success message
+        alert(message);
+
+        // Clear the cart and reset the form
+        cart = [];
+        localStorage.setItem('cart', JSON.stringify(cart));
+        displayCartItems();
+        closeCheckoutForm();
+    })
+    .catch(error => {
+        alert("An error occurred: " + error.message);
+    });
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    let cart = JSON.parse(localStorage.getItem('cart')) || [];
+    const cartItemsContainer = document.getElementById('cart-items-container');
+    const subtotalElement = document.getElementById('subtotal');
+    const subtotalDisplay = document.getElementById('subtotal-display');
+    const sauceSelectionContainer = document.getElementById('sauce-selection-container');
+
+    function displayCartItems() {
+        cartItemsContainer.innerHTML = '';
+        let subtotal = 0;
+
+        if (cart.length === 0) {
+            cartItemsContainer.innerHTML = '<p>Your cart is empty. Add items to see them here.</p>';
+            subtotalElement.textContent = '0';
+            return;
+        }
+
+        cart.forEach((item, index) => {
+            subtotal += item.price;
+            const cartItem = document.createElement('div');
+            cartItem.className = 'cart-item';
+            cartItem.innerHTML = `
+                <p>${item.name} - RS ${item.price}</p>
+                <button class="remove-button" onclick="removeItem(${index})">Remove</button>
+            `;
+            cartItemsContainer.appendChild(cartItem);
+        });
+
+        subtotalElement.textContent = subtotal;
+        subtotalDisplay.textContent = subtotal;
+    }
+
+    function removeItem(index) {
+        cart.splice(index, 1);
+        localStorage.setItem('cart', JSON.stringify(cart));
+        displayCartItems();
+    }
+
+    function openCheckoutForm() {
+        if (cart.length === 0) {
+            alert("Your cart is empty!");
+            return;
+        }
+        document.getElementById("checkout-modal").style.display = "block";
+        populatePickupTimes();
+        displaySauceSelection();
+    }
+
+    function closeCheckoutForm() {
+        document.getElementById("checkout-modal").style.display = "none";
+    }
+
+    function validateDate() {
+        const pickupDate = new Date(document.getElementById("pickup-date").value);
+        if (pickupDate.getDay() === 0) {
+            alert("We are closed on Sundays. Please select another date.");
+            document.getElementById("pickup-date").value = "";
+        }
+    }
+    function populatePickupTimes() {
+    const timeSelect = document.getElementById("pickup-time");
+    timeSelect.innerHTML = ''; // Clear the existing options
+
+    const now = new Date();
+    const currentHour = now.getHours();
+    const currentMinute = now.getMinutes();
+
+    const openingTime = 9; // Opening hour (9:00 AM)
+    const closingTime = 17; // Closing hour (5:00 PM)
+
+    const selectedDate = new Date(document.getElementById("pickup-date").value);
+    const isToday = selectedDate.getFullYear() === now.getFullYear() &&
+                    selectedDate.getMonth() === now.getMonth() &&
+                    selectedDate.getDate() === now.getDate();
+
+    let startHour = isToday ? 12 : openingTime; // Start time is 12 PM if today, else 9 AM
+    let startMinute = 0;
+
+    // If today and it's past 12 PM, skip earlier times
+    if (isToday && currentHour >= 12) {
+        startHour = openingTime; // Start from 9 AM onwards
+        startMinute = 0;
+    }
+
+    // Generate time slots in 30-minute intervals
+    for (let hour = startHour; hour < closingTime; hour++) {
+        for (let minute = (hour === startHour ? startMinute : 0); minute < 60; minute += 30) {
+            const timeOption = document.createElement("option");
+            const formattedTime = `${String(hour).padStart(2, '0')}:${String(minute).padStart(2, '0')}`;
+            timeOption.value = formattedTime;
+            timeOption.textContent = formattedTime;
+            timeSelect.appendChild(timeOption);
+        }
+    }
+}
+
+
+
+
+
+    function displaySauceSelection() {
+        sauceSelectionContainer.innerHTML = '';
+
+        cart.forEach((item, index) => {
+            const sauceSelection = document.createElement('div');
+            sauceSelection.className = 'sauce-selection';
+            sauceSelection.innerHTML = `
+                <label>Sauces for ${item.name}:</label>
+                <div class="sauces">
+                    <input type="checkbox" id="ketchup-${index}" name="sauce-${index}" value="ketchup">
+                    <label for="ketchup-${index}">Ketchup</label>
+                    <input type="checkbox" id="mayonnaise-${index}" name="sauce-${index}" value="mayonnaise">
+                    <label for="mayonnaise-${index}">Mayonnaise</label>
+                    <input type="checkbox" id="chili-${index}" name="sauce-${index}" value="chili">
+                    <label for="chili-${index}">Chili</label>
+
+
+                    
+                </div>
+            `;
+            sauceSelectionContainer.appendChild(sauceSelection);
+        });
+    }
+
+    function displaySauceSelection() {
+    sauceSelectionContainer.innerHTML = '';
+
+    cart.forEach((item, index) => {
+        const sauceSelection = document.createElement('div');
+        sauceSelection.className = 'sauce-selection';
+        sauceSelection.innerHTML = `
+            <label>Sauces for ${item.name}:</label>
+            <div class="sauces">
+                <input type="checkbox" id="ketchup-${index}" name="sauce_${index}[]" value="ketchup">
+                <label for="ketchup-${index}">Ketchup</label>
+                <input type="checkbox" id="mayonnaise-${index}" name="sauce_${index}[]" value="mayonnaise">
+                <label for="mayonnaise-${index}">Mayonnaise</label>
+                <input type="checkbox" id="chili-${index}" name="sauce_${index}[]" value="chili">
+                <label for="chili-${index}">Chili</label>
+            </div>
+        `;
+        sauceSelectionContainer.appendChild(sauceSelection);
+    });
+}
+
+
+    function placeOrder(event) {
+        event.preventDefault();
+        const name = document.getElementById("name").value;
+        const contact = document.getElementById("contact").value;
+        const pickupDate = document.getElementById("pickup-date").value;
+        const pickupTime = document.getElementById("pickup-time").value;
+
+        alert(`Thanks, ${name}! We will contact you within 10 minutes - Star Kebab`);
+        
+        cart = [];
+        localStorage.setItem('cart', JSON.stringify(cart));
+        displayCartItems();
+        closeCheckoutForm();
+    }
+
+    displayCartItems();
+
+
+
+
+
+
+// Function to calculate and update subtotal
+function updateSubtotal() {
+        let subtotal = 0;
+
+        // Calculate subtotal based on cart items
+        cart.forEach(item => {
+            subtotal += item.price;
+        });
+
+        // Add the price of selected toppings
+        const toppingCheckboxes = document.querySelectorAll('.topping-options input[type="checkbox"]');
+        toppingCheckboxes.forEach(checkbox => {
+            if (checkbox.checked) {
+                subtotal += parseInt(checkbox.getAttribute('data-price'), 10);
+            }
+        });
+
+        // Update the displayed subtotal
+        subtotalElement.textContent = subtotal;
+        subtotalDisplay.textContent = subtotal;
+    }
+
+    // Add event listeners to topping checkboxes
+    function addToppingListeners() {
+        const toppingCheckboxes = document.querySelectorAll('.topping-options input[type="checkbox"]');
+        toppingCheckboxes.forEach(checkbox => {
+            checkbox.addEventListener('change', updateSubtotal);
+        });
+    }
+
+    // Open Checkout Form with Listeners for Toppings
+    function openCheckoutForm() {
+        if (cart.length === 0) {
+            alert("Your cart is empty!");
+            return;
+        }
+        document.getElementById("checkout-modal").style.display = "block";
+        populatePickupTimes();
+        displaySauceSelection();
+        addToppingListeners(); // Attach listeners for toppings
+        updateSubtotal(); // Initial subtotal calculation
+    }
+
+    // Display Cart Items
+    function displayCartItems() {
+        cartItemsContainer.innerHTML = '';
+        let subtotal = 0;
+
+        if (cart.length === 0) {
+            cartItemsContainer.innerHTML = '<p>Your cart is empty. Add items to see them here.</p>';
+            subtotalElement.textContent = '0';
+            return;
+        }
+
+        cart.forEach((item, index) => {
+            subtotal += item.price;
+            const cartItem = document.createElement('div');
+            cartItem.className = 'cart-item';
+            cartItem.innerHTML = `
+                <p>${item.name} - RS ${item.price}</p>
+                <button class="remove-button" onclick="removeItem(${index})">Remove</button>
+            `;
+            cartItemsContainer.appendChild(cartItem);
+        });
+
+        subtotalElement.textContent = subtotal;
+        subtotalDisplay.textContent = subtotal;
+    }
+
+    // Initialize Cart Display
+    displayCartItems();
+
+
+
+
+
+
+
+    
+</script>
+<form id="checkout-form" onsubmit="placeOrder(event)">
+<style>
+/* General Styling */
+/* General Styling */
+/* Checkout Form Styles */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f5f5f5;
+    color: #333;
+    line-height: 1.6;
+    margin: 0;
+    padding: 0;
+}
+
+/* Modal Container for Checkout Form */
+/* Modal Container for Checkout Form */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5); /* Dark overlay for focus */
+    z-index: 1000;
+    animation: fadeInModal 0.4s ease-in-out;
+}
+
+/* Modal Content */
+.modal-content {
+    background: #ffffff; /* Clean white background */
+    padding: 30px; /* Added more padding */
+    width: 90%;
+    max-width: 600px; /* Adjusted for desktop screens */
+    margin: 40px auto;
+    border-radius: 20px; /* Soft rounded corners */
+    box-shadow: 0px 15px 35px rgba(0, 0, 0, 0.2); /* Softer, larger shadow for a more elegant effect */
+    animation: slideDown 0.5s ease-in-out; /* Smoother animation */
+    overflow-y: auto; /* Scrollable content if too large */
+    max-height: 80vh; /* Limit modal height */
+    text-align: center; /* Center the form content */
+    font-family: 'Roboto', sans-serif; /* Modern font */
+}
+
+/* Close Button for Modal */
+.close {
+    font-size: 24px; /* Slightly larger */
+    color: #333; /* Darker color */
+    cursor: pointer;
+    transition: color 0.3s ease, transform 0.3s ease;
+    background: none;
+    border: none;
+}
+
+.close:hover {
+    color: #e74c3c; /* Red color on hover */
+    transform: scale(1.2); /* Subtle scale effect on hover */
+}
+
+/* Form Title */
+h2.modal-title {
+    font-size: 28px; /* Larger heading for more impact */
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 20px;
+    text-transform: uppercase; /* Make title more prominent */
+    letter-spacing: 2px; /* Added letter-spacing for elegance */
+}
+
+/* Modal Content Paragraph */
+.modal-content p {
+    font-size: 16px;
+    color: #666; /* Lighter text color */
+    margin-bottom: 20px;
+    line-height: 1.6; /* Better line spacing for readability */
+}
+
+/* Adding a subtle animation to modal content */
+@keyframes slideDown {
+    0% {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Responsive Styles */
+@media (max-width: 767px) {
+    /* For mobile screens */
+    .modal-content {
+        padding: 20px; /* Reduced padding for mobile */
+        width: 90%;
+        max-width: 90%; /* Ensure modal width is well adjusted on mobile */
+        margin: 10px;
+        top: 50%;
+        transform: translateY(-50%); /* Center modal vertically on mobile */
+    }
+
+    h2.modal-title {
+        font-size: 22px; /* Slightly smaller heading for mobile */
+    }
+
+    .modal-content p {
+        font-size: 14px; /* Smaller text for mobile */
+    }
+
+    .close {
+        font-size: 22px; /* Larger close button for mobile */
+    }
+}
+
+@media (min-width: 768px) and (max-width: 1024px) {
+    /* For tablet screens */
+    .modal-content {
+        padding: 25px; /* Adjusted padding for tablets */
+        max-width: 80%;
+    }
+
+    h2.modal-title {
+        font-size: 24px; /* Adjusted heading size for tablets */
+    }
+
+    .modal-content p {
+        font-size: 15px; /* Adjusted text size for tablets */
+    }
+
+    .close {
+        font-size: 24px; /* Larger close button on tablets */
+    }
+}
+
+@media (min-width: 1025px) {
+    /* For larger desktop screens */
+    .modal-content {
+        max-width: 600px; /* Default width for larger screens */
+    }
+
+    h2.modal-title {
+        font-size: 28px; /* Default heading size for larger screens */
+    }
+
+    .modal-content p {
+        font-size: 16px; /* Default text size */
+    }
+
+    .close {
+        font-size: 24px; /* Default close button size */
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+/* Footer Styles */
+.footer {
+    padding: 20px; /* Add space inside the footer */
+    background-color: #3b5998; /* Dark blue background */
+    color: white; /* White text color */
+    text-align: center; /* Center the text */
+    border-radius: 8px; /* Slightly rounded corners */
+    margin-top: 20px; /* Add space above the footer */
+    font-size: 14px; /* Standard font size */
+    box-shadow: 0px -2px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow for elevation */
+}
+
+.footer p {
+    margin: 0; /* Remove extra spacing around the paragraph */
+    font-family: 'Poppins', sans-serif; /* Modern font for consistency */
+    letter-spacing: 0.5px; /* Slight spacing for readability */
+}
+
+
+/* Form Groups */
+.form-group {
+    margin-bottom: 15px;
+    text-align: left;
+}
+
+.form-group label {
+    display: inline-block;
+    margin-bottom: 5px;
+    font-weight: bold;
+    color: #555;
+    font-size: 14px;
+}
+
+.form-group input[type="text"],
+.form-group input[type="date"],
+.form-group select,
+.form-group input[type="file"] {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    box-sizing: border-box;
+    transition: border-color 0.3s ease;
+    font-size: 14px;
+}
+
+.form-group input:focus,
+.form-group select:focus {
+    border-color: #008cba;
+    outline: none;
+    box-shadow: 0 0 6px rgba(0, 140, 186, 0.3);
+}
+
+/* Sauce Selection */
+.sauce-selection {
+    margin-top: 10px;
+    text-align: left;
+}
+
+.sauces {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 5px;
+}
+
+.sauces label {
+    cursor: pointer;
+    padding: 8px 12px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    background: #f9f9f9;
+    transition: all 0.3s ease;
+}
+
+.sauces label:hover {
+    background: #008cba;
+    color: #fff;
+}
+
+/* Subtotal Section */
+.form-subtotal {
+    font-size: 16px;
+    font-weight: bold;
+    color: #333;
+    margin: 15px 0;
+}
+
+/* QR Code Section */
+.qr-code-container {
+    text-align: center;
+    margin: 15px 0; /* Adjusted for consistent spacing */
+}
+
+.qr-code-image {
+    width: 100px;
+    height: 100px;
+    object-fit: contain;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 5px;
+    background-color: #f9f9f9;
+    display: inline-block;
+}
+
+/* Submit Button */
+button[type="submit"] {
+    width: 100%;
+    background-color: #008cba; /* Original button color */
+    color: white;
+    padding: 14px 20px;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s;
+}
+
+button[type="submit"]:hover {
+    background-color: #005f7f; /* Darker shade for hover effect */
+    transform: translateY(-2px);
+}
+
+/* Animations */
+@keyframes fadeInModal {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes slideDown {
+    from {
+        transform: translateY(-10px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .modal-content {
+        width: 90%;
+        padding: 15px;
+    }
+
+    button[type="submit"] {
+        font-size: 14px;
+        padding: 12px 16px;
+    }
+}
+
+@media (max-width: 480px) {
+    .modal-content {
+        width: 95%;
+        padding: 10px;
+    }
+
+    button[type="submit"] {
+        font-size: 12px;
+        padding: 10px 14px;
+    }
+}
+
+
+
+
+
+</style>
+
+
+
+
+
+</body>
+</html>

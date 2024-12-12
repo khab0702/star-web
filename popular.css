@@ -1,0 +1,190 @@
+*{
+    margin: 0;
+    padding: 0;
+}
+body{
+    margin: 0;
+    padding: 0;
+    background-color: #ded9ca;
+}
+.icon{
+  position: absolute;
+  top: -2%;
+left:-2%;
+
+  width: 150px;
+  height: 94px;
+}
+
+h1{
+    text-align: center;
+    font-weight: bold;
+    color: rgb(12, 114, 239);
+margin-top:0%;
+text-decoration:underline;
+}
+
+
+
+.container{
+    display: flex;
+  }
+  .pp {
+    width: 400px;
+    height: 200px;
+    background-color:#f8bc08;
+    margin-right: 10px; /* Adjust the margin as per your preference */
+    opacity: 95%;
+    
+
+  }
+  .pp:hover{
+    background-color: rgb(233, 239, 53);
+    transition: .4s all ease-in;
+    cursor: pointer;
+   
+
+  }
+  .pp img{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .pp{
+    animation-name:rotate;
+    animation-duration: 5s;
+    
+    animation-iteration-count:1s;
+  }
+  
+  
+    @keyframes rotate {
+        from{ opacity: 0;}
+        to{ opacity: 1;}
+      }
+    
+
+
+
+.container1{
+    display: flex;
+  }
+  .pp1 {
+    width: 400px;
+    height: 200px;
+    background-color:#f8bc08;
+    margin-right: 10px; /* Adjust the margin as per your preference */
+    opacity: 100%;
+    
+
+  }
+  .pp1:hover{
+    background-color: rgb(233, 239, 53);
+    transition: .4s all ease-in;
+    cursor: pointer;
+   
+
+  }
+  .pp1 img{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .pp1{
+    animation-name:slide;
+    animation-duration: 5s;
+    animation-timing-function: ease-in-out;
+    animation-iteration-count:1s;
+  }
+  
+  @keyframes slide {
+    0% {
+      transform: translateX(0);
+    }
+    50% {
+      transform: translateX(200px);
+    }
+    100% {
+      transform: translateX(0);
+    }
+}
+.ord{
+    text-align: center;
+    font-size: 15px;
+    font-weight: bold;
+    cursor: pointer;
+    
+  }
+  .ords{
+    font-size: 20px;
+    font-weight: bold;
+    margin: 2px;
+    padding: 4px;
+  }
+  .ords:hover{
+    background-color: aqua;
+    cursor: pointer;
+    
+  }
+h2{
+text-align: center;
+
+  }
+  .rectangle11{
+    width: 1518px;
+    height: 174px;
+    background-color: rgb(231, 235, 204);
+  }
+  .vv{
+   
+    display: flex;
+    justify-content: center;
+    
+  }
+  
+  .vv ul li{
+    
+    text-decoration: none;
+   font-size: 15px;
+   font-weight: bold;
+    margin: 7px;
+  
+  }
+  .vv ul li a{
+  
+    text-decoration:none;
+  
+    color: blue;
+  }
+  .vv ul li a:hover{
+   
+    background-color: #14F348;
+  
+    transition: .3s all ease-in;
+    cursor: pointer;
+  }
+  
+  .vv ul li :active{
+    transform: scale(0.96);
+    color: aqua;
+   }
+   .icons{
+    position: absolute;
+    top:72%;
+    left:-2.4%;
+    width: 138px;
+    height: 120px;
+  }
+  @keyframes slide-in {
+    from {
+      transform: translateX(-100%);
+    }
+    to {
+      transform: translateX(0);
+    }
+  }
+  
+  .animated-text h2 {
+    animation: slide-in 5s ease 2;
+  
+  }

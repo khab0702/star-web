@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>STAR KEBAB</title>
+    <link rel="stylesheet" href="ss.css">
+    <script src="animation.js" defer></script>
+    <link rel="icon" href="image/logo star png.png">
+</head>
+<body>
+    <nav class="home">
+        <div class="logo-container">
+            <img src="image/logo star png.png" alt="Star Kebab Logo" class="logo-img">
+            <h1 class="logo-text">STAR KEBAB</h1>
+        </div>
+        <div class="menu-toggle" id="menu-toggle">&#9776;</div>
+        <div class="nav-links-container">
+            <ul class="nav-links" id="nav-links">
+                <li><a href="#home">HOME</a></li>
+                <li><a href="#menu">MENU</a></li>
+                <li><a href="#popular-menu">POPULAR MENU</a></li>
+                <li><a href="#faq">FAQ</a></li>
+                <li><a href="#location">LOCATION</a></li>
+                <li><a href="cart.html" id="cart-link">🛒 Cart (<span id="cart-count">0</span>)</a></li>
+            </ul>
+        </div>
+    </nav>
+    
+
+
+    <!-- Banner Section -->
+    <div class="banner">
+        <img src="image/fb cover.jpg" alt="Star Kebab Banner" class="banner-image">
+        <div class="banner-text4">
+            <h4>Welcome to Star Kebab</h4>
+            <h4>Good Food, Fast Delivery</h4>
+          
+        </div>
+    </div>
+
+
+
+    <div id="chatbot-container">
+        <button id="chatbot-toggle">💬</button>
+        <div id="chatbot">
+            <div id="chatbot-header">
+                <span>Chat with us!</span>
+                <button id="chatbot-close">✖</button>
+            </div>
+            <div id="chatbot-messages"></div>
+            <form id="chatbot-form">
+                <input type="text" id="chatbot-input" placeholder="Type your message..." />
+                <button type="submit">Send</button>
+            </form>
+        </div>
+    </div>
+    <!-- Header Section -->
+    <header id="home" class="header-center">
+        <h1>Welcome to Star Kebab Menu!</h1>
+        <p>Your favorite spot for delicious kebabs and delicious plates.</p>
+    </header>
+
+    <!-- About Section -->
+    <section class="about">
+        <h3>Why Choose Us?</h3>
+        <p>We offer a large variety of food and value for money. Our taste is different from others!</p>
+    </section>
+
+    
+    <!-- Menu Section -->
+    <section class="container" id="menu">
+        <h2>Our Menu</h2>
+        <div class="menu-items">
+            <div class="rectangle fade-in">
+                <img src="image/beef.png" alt="Kebab Special">
+                <p>BEEF (chips, salad & bread)</p>
+                <p>Price: RS 325</p>
+                <button class="add-to-cart" data-item="Beef Plate" data-price="325" onclick="addToCart('Beef Plate', 325)">Add to Cart</button>
+            </div>
+            <div class="rectangle fade-in">
+                <img src="image/agneau.png" alt="Grilled Chicken Kebab">
+                <p>AGNEAU (Lamb) (chips, salad & bread)</p>
+                <p>Price: RS 425</p>
+                <button class="add-to-cart" data-item="Agneau Plate" data-price="425" onclick="addToCart('Agneau Plate', 425)">Add to Cart</button>
+            </div>
+            <div class="rectangle fade-in">
+                <img src="image/hot dog.png" alt="Beef Kebab">
+                <p>HOT DOG (chips, salad & bread)</p>
+                <p>Price: RS 120</p>
+                <button class="add-to-cart" data-item="Hotdog Plate" data-price="175" onclick="addToCart('Hotdog Plate', 175)">Add to Cart</button>
+            </div>
+            <div class="rectangle fade-in">
+                <img src="image/fillet.png" alt="Refreshing Drinks">
+                <p>CHICKEN LEG (chips, salad & bread)</p>
+                <p>Price: RS 225</p>
+                <button class="add-to-cart" data-item="Fillet Plate" data-price="210" onclick="addToCart('Fillet Plate', 210)">Add to Cart</button>
+            </div>
+            <div class="rectangle fade-in">
+                <img src="image/fish png.png" alt="Spicy Fries">
+                <p>FISH (chips, salad, lemon & bread)</p>
+                <p>Price: RS 275</p>
+                <button class="add-to-cart" data-item="Fish Plate" data-price="275" onclick="addToCart('Fish Plate', 275)">Add to Cart</button>
+            </div>
+            <div class="rectangle fade-in">
+                <img src="image/brochette.png" alt="Grilled Veggies">
+                <p>CHICKEN BROCHETTE (chips, salad & bread)</p>
+                <p>Price: RS 200</p>
+                <button class="add-to-cart" data-item="Brochette" data-price="200" onclick="addToCart('Brochette', 200)">Add to Cart</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Popular Menu Section -->
+    <section class="container" id="popular-menu">
+        <h2>Popular Menu</h2>
+        <div class="popular-menu-items">
+            <div class="popular-rectangle">
+                <img src="image/rounder.png" alt="Popular Kebab Special">
+                <p>ROUNDER</p>
+                <p>Price: RS 200</p>
+                <button class="add-to-cart" data-item="Rounder" data-price="185" onclick="addToCart('Rounder', 185)">Add to Cart</button>
+            </div>
+            <div class="popular-rectangle">
+                <img src="image/wrap.png" alt="Popular Grilled Chicken Kebab">
+                <p>WRAP</p>
+                <p>Price: RS 190</p>
+                <button class="add-to-cart" data-item="Wrap" data-price="230" onclick="addToCart('Wrap', 230)">Add to Cart</button>
+            </div>
+            <div class="popular-rectangle">
+                <img src="image/panini.png" alt="Popular Hot Dog">
+                <p>PANINI</p>
+                <p>Price: RS 185</p>
+                <button class="add-to-cart" data-item="Panini" data-price="225" onclick="addToCart('Panini', 225)">Add to Cart</button>
+            </div>
+            <div class="popular-rectangle">
+                <img src="image/star kebab.png" alt="Popular Chicken Fillet">
+                <p>KEBAB</p>
+                <p>Price: RS 120</p>
+                <button class="add-to-cart" data-item="Kebab" data-price="120" onclick="addToCart('Kebab', 120)">Add to Cart</button>
+            </div>
+            <div class="popular-rectangle">
+                <img src="image/pnggg.png" alt="Popular Fish Kebab">
+                <p>PRAWN (CREVETTE)</p>
+                <p>Price: RS 325</p>
+                <button class="add-to-cart" data-item="Prawn Plate" data-price="325" onclick="addToCart('Prawn Plate', 325)">Add to Cart</button>
+            </div>
+            <div class="popular-rectangle">
+                <img src="image/fillet_g.png" alt="Popular Brochette">
+                <p>FILLET (CHIPS, SALAD & BREAD)</p>
+                <p>Price: RS 215</p>
+                <button class="add-to-cart" data-item="Fillet Plate" data-price="215" onclick="addToCart('Fillet Plate', 215)">Add to Cart</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Quote Section -->
+    <section class="quote">
+        <p>"The best kebabs in town, grilled to perfection!"</p>
+    </section>
+
+    <section class="container" id="faq">
+        <h2 class="faq-title">Frequently Asked Questions</h2>
+        <section class="faq-accordion">
+            <div class="faq-item" data-expanded="false">
+                <h3 class="faq-question">Service Options</h3>
+                <div class="faq-content">
+                    <p>Dine-in, Kerbside Pickup, and Delivery only in Port-Louis</p>
+                </div>
+            </div>
+            <div class="faq-item" data-expanded="false">
+                <h3 class="faq-question">Is Everything Halal?</h3>
+                <div class="faq-content">
+                    <p>Yes, we only use ingredients from halal-certified vendors. All certificates can be examined in person at our restaurant.</p>
+                </div>
+            </div>
+            <div class="faq-item" data-expanded="false">
+                <h3 class="faq-question">Do You Take Table Reservations?</h3>
+                <div class="faq-content">
+                    <p>We do not hold table reservations, but you are welcome to order ahead.</p>
+                </div>
+            </div>
+            <div class="faq-item" data-expanded="false">
+                <h3 class="faq-question">How Do I Order? (CONTACT US)</h3>
+                <div class="faq-content">
+                    <p>You can order via our website or by calling 58125686 or 59461444. Getting your order 100% right is our top priority!</p>
+                </div>
+            </div>
+            <div class="faq-item" data-expanded="false">
+                <h3 class="faq-question">Opening Hours</h3>
+                <div class="faq-content">
+                    <p>Open daily from 09.00 AM to 17.00 PM, except closed on Sundays.</p>
+                </div>
+            </div>
+            <div class="faq-item" data-expanded="false">
+                <h3 class="faq-question">Do You Deliver?</h3>
+                <div class="faq-content">
+                    <p>Yes, we deliver only in Port-Louis but not for now.</p>
+                </div>
+            </div>
+            <div class="faq-item" data-expanded="false">
+                <h3 class="faq-question">Payment Methods</h3>
+                <div class="faq-content">
+                    <p>We accept Juice and cash payments only. No card payments at this time. Online we don't accept juice only cash when pickup.</p>
+                </div>
+            </div>
+        </section>
+        <div class="contact-info">
+            <h4>OPEN<br>EVERYDAY<br>09.00AM-17.00PM<br>Closed on Sunday<br> venus faced to filling station shell  Port Louis</h4>
+        </div>
+    </section>
+    
+    
+
+    
+
+    <!-- Header Section -->
+
+
+        <section class="container" id="location">
+       <h2>Location & Feedback</h2>
+        <p>Find us in Venus, near Filling Station Shell (Port Louis)</p>
+    </header>
+</section>
+    <!-- Map Section -->
+    <section class="location-section">
+        <h2>Click on the Map to View Our Location</h2>
+        <a href="https://maps.app.goo.gl/NxLnj2MTMw9o1zKL7" target="_blank">
+            <img src="image/Screenshot (118).png" alt="Location Map" class="location-map">
+        </a>
+    </section>
+
+    <!-- Our Story Section -->
+    <section class="story-section">
+        <h2>NOU ZISTWAR</h2>
+        <p>Our goal is simple: we want to serve you food that makes both your taste buds and heart happy. To achieve this, we use only the best ingredients on the market in our recipes.</p>
+        <p>Our flavors stand out from the rest, and you'll need to taste them yourself to believe it. Whether you're in a hurry or have time to spare, we ensure you receive exceptional service.</p>
+        <p><b>RIDWAAN – Chef and Co-Founder of Star Kebab</b></p>
+    </section>
+
+    <!-- Video Section -->
+    <section class="video-section">
+        <h2>Some Cooking Highlights</h2>
+        <div class="video-container">
+            <video controls muted poster="image/preview1.png">
+                <source src="image/WhatsApp Video 2024-11-01 at 16.14.15.mp4" type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
+        </div>
+        <div class="video-container">
+            <video controls muted loop poster="image/preview2.png">
+                <source src="image/WhatsApp Video 2023-07-29 at 12.54.30.mp4" type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
+        </div>
+    </section>
+
+    <!-- Image Section -->
+    <section class="photo-section">
+        <h2>Our Team in Action to give you best kebab </h2>
+        <img src="image/WhatsApp Image 2024-11-01 at 16.15.56.jpeg" alt="Team Photo" class="team-photo">
+    </section>
+
+    <section class="reviews-section" id="customer-reviews">
+        <h2>Customer Reviews</h2>
+        <div id="reviews-container">
+            <!-- Existing reviews will be displayed here -->
+        </div>
+        <form id="review-form">
+            <label for="review-name">Name:</label>
+            <input type="text" id="review-name" placeholder="Your Name" required maxlength="50">
+            
+            <label for="review-text">Review:</label>
+            <textarea id="review-text" placeholder="Your feedback..." required maxlength="500"></textarea>
+            
+            <label for="review-rating">Rating:</label>
+            <select id="review-rating" required>
+                <option value="">Select a rating</option>
+                <option value="5">⭐️⭐️⭐️⭐️⭐️ - Excellent</option>
+                <option value="4">⭐️⭐️⭐️⭐️ - Good</option>
+                <option value="3">⭐️⭐️⭐️ - Average</option>
+                <option value="2">⭐️⭐️ - Poor</option>
+                <option value="1">⭐️ - Terrible</option>
+            </select>
+            
+            <button type="submit">Submit Review</button>
+        </form>
+    </section>
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <footer id="location" class="footer">
+        <div class="footer-container">
+            <div class="footer-item">
+                <h4>Our Location</h4>
+                <p>Find us in Venus, near Filling Station Shell (Port Louis)</p>
+                <p>Email: starkebab.com</p>
+                <p>Phone: 58125686</p>
+            </div>
+            <div class="footer-item">
+                <h4>Follow Us</h4>
+                <div class="social-icons">
+                    <a href="https://www.facebook.com/starkebabmauritius?mibextid=ZbWKwL"><img src="image/Facebook_Logo_2023.png" alt="Facebook"></a>
+                 
+                    <a href="https://www.facebook.com/starkebabmauritius?mibextid=ZbWKwL"><img src="image/pngwing.com (3).png" alt="Instagram"></a>
+                </div>
+            </div>
+            <div class="footer-item">
+                <h4>Quick Links</h4>
+                <ul class="quick-links">
+                    <li><a href="#home">Home</a></li>
+                    <li><a href="#menu">Menu</a></li>
+                    <li><a href="#popular-menu">Popular Menu</a></li>
+                    <li><a href="#faq">FAQ</a></li>
+                    <li><a href="#location">Location</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2024 Star Kebab. All rights reserved.</p>
+        </div>
+    </footer>
+    
+
+
+
+
+
+<script>
+
+
+const chatbotToggle = document.getElementById('chatbot-toggle');
+    const chatbot = document.getElementById('chatbot');
+    const chatbotClose = document.getElementById('chatbot-close');
+    const chatbotForm = document.getElementById('chatbot-form');
+    const chatbotInput = document.getElementById('chatbot-input');
+    const chatbotMessages = document.getElementById('chatbot-messages');
+
+    // Toggle chatbot visibility
+    chatbotToggle.addEventListener('click', () => {
+        chatbot.style.display = chatbot.style.display === 'block' ? 'none' : 'block';
+    });
+
+    // Close chatbot
+    chatbotClose.addEventListener('click', () => {
+        chatbot.style.display = 'none';
+    });
+
+    // Handle message sending
+    chatbotForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const userMessage = chatbotInput.value.trim();
+        if (userMessage) {
+            addMessage('You', userMessage);
+            chatbotInput.value = '';
+
+            // Simulate bot response
+            setTimeout(() => {
+                addMessage('Bot', 'Thank you for reaching out! How can I assist you today?');
+            }, 1000);
+        }
+    });
+    document.querySelectorAll('.faq-item').forEach((item) => {
+    item.addEventListener('click', () => {
+        const isExpanded = item.getAttribute('data-expanded') === 'true';
+        item.setAttribute('data-expanded', !isExpanded);
+    });
+});
+
+    
+
+    function addMessage(sender, message) {
+        const messageElement = document.createElement('div');
+        messageElement.textContent = `${sender}: ${message}`;
+        chatbotMessages.appendChild(messageElement);
+        chatbotMessages.scrollTop = chatbotMessages.scrollHeight;
+    }
+  const menuToggle = document.getElementById('menu-toggle');
+    const navLinksContainer = document.getElementById('nav-links-container');
+
+    menuToggle.addEventListener('click', () => {
+        navLinksContainer.classList.toggle('active');
+    });
+      // Toggle navigation menu visibility on mobile
+document.getElementById('menu-toggle').addEventListener('click', function () {
+    const navLinks = document.getElementById('nav-links');
+    navLinks.classList.toggle('show');
+});
+let cart = [];
+let cartCountElement = document.getElementById('cart-count');
+
+function addToCart(itemName, itemPrice) {
+    cart.push({ name: itemName, price: itemPrice });
+    localStorage.setItem('cart', JSON.stringify(cart));
+    cartCountElement.textContent = cart.length;
+
+    // Create confirmation message with a tick icon
+    const confirmationMessage = document.createElement('div');
+    confirmationMessage.className = 'cart-confirmation';
+    confirmationMessage.innerHTML = `<span class="tick">&#10003;</span> ${itemName} added to cart!`;
+    confirmationMessage.style.position = 'fixed';
+    confirmationMessage.style.right = '10px';
+    confirmationMessage.style.top = '10px'; // Always at the top
+    confirmationMessage.style.padding = '10px';
+    confirmationMessage.style.backgroundColor = 'green';
+    confirmationMessage.style.color = 'white';
+    confirmationMessage.style.borderRadius = '5px';
+    confirmationMessage.style.zIndex = '1000';
+
+    // Append the message to the body
+    document.body.appendChild(confirmationMessage);
+
+    // Remove the message after 2 seconds
+    setTimeout(() => {
+        confirmationMessage.remove();
+    }, 2000);
+}
+
+           // Adjust position for mobile screens
+           function adjustMessagePosition() {
+            const confirmationMessages = document.querySelectorAll('.cart-confirmation');
+            confirmationMessages.forEach(message => {
+                const buttonParent = message.parentElement;
+                message.style.left = buttonParent.offsetLeft + 'px';
+                message.style.top = (buttonParent.offsetTop + buttonParent.offsetHeight + 10) + 'px'; // below the button
+            });
+        }
+
+        window.addEventListener('resize', adjustMessagePosition);
+        window.addEventListener('DOMContentLoaded', adjustMessagePosition);
+    function validateForm() {
+        const username = document.getElementById('username').value;
+        const contact = document.getElementById('contact').value;
+        const orderDate = document.getElementById('order-date').value;
+        const selectedDate = new Date(orderDate);
+        const dayOfWeek = selectedDate.getUTCDay(); // 0 = Sunday
+
+        if (username.length > 8) {
+            alert("Username must be 8 characters or less.");
+            return false;
+        }
+
+        if (contact.length > 8) {
+            alert("Contact number must be 8 digits.");
+            return false;
+        }
+
+        if (dayOfWeek === 0) {
+            alert("Orders cannot be placed on Sundays.");
+            return false;
+        }
+
+        return true;
+    }
+
+    // Populate time options in 30-minute intervals
+    function populateTimeOptions() {
+        const select = document.getElementById('order-time');
+        for (let hour = 9; hour <= 17; hour++) {
+            for (let minute = 0; minute < 60; minute += 30) {
+                const time = `${hour.toString().padStart(2, '0')}:${minute.toString().padStart(2, '0')}`;
+                const option = document.createElement('option');
+                option.value = time;
+                option.textContent = time;
+                select.appendChild(option);
+            }
+        }
+    }
+
+    // Initialize time options on page load
+    document.addEventListener('DOMContentLoaded', populateTimeOptions);
+
+
+
+
+
+
+    document.getElementById('review-form').addEventListener('submit', function (e) {
+    e.preventDefault();
+
+    // Get user input
+    const name = document.getElementById('review-name').value.trim();
+    const review = document.getElementById('review-text').value.trim();
+    const rating = document.getElementById('review-rating').value;
+
+    if (name && review && rating) {
+        // Create a new review element
+        const reviewItem = document.createElement('div');
+        reviewItem.classList.add('review-item');
+        reviewItem.innerHTML = `
+            <h4>${name} - ${'⭐️'.repeat(rating)}</h4>
+            <p>${review}</p>
+        `;
+
+        // Append to reviews container
+        document.getElementById('reviews-container').appendChild(reviewItem);
+
+        // Reset form
+        document.getElementById('review-form').reset();
+
+        // Optional: Save reviews to local storage
+        const reviews = JSON.parse(localStorage.getItem('reviews') || '[]');
+        reviews.push({ name, review, rating });
+        localStorage.setItem('reviews', JSON.stringify(reviews));
+    } else {
+        alert('Please fill out all fields.');
+    }
+});
+
+// Load existing reviews from local storage
+document.addEventListener('DOMContentLoaded', function () {
+    const reviews = JSON.parse(localStorage.getItem('reviews') || '[]');
+    const reviewsContainer = document.getElementById('reviews-container');
+    reviews.forEach(({ name, review, rating }) => {
+        const reviewItem = document.createElement('div');
+        reviewItem.classList.add('review-item');
+        reviewItem.innerHTML = `
+            <h4>${name} - ${'⭐️'.repeat(rating)}</h4>
+            <p>${review}</p>
+        `;
+        reviewsContainer.appendChild(reviewItem);
+    });
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</script>
+
+  
+    
+
+
+
+</body>
+</html>
+    
+

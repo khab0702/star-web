@@ -1,0 +1,292 @@
+/* General Styling */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f8f9fa;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    margin: 0;
+    color: #2c3e50;
+}
+
+/* Form Styling */
+.order-form {
+    max-width: 600px;
+    padding: 2rem;
+    background-color: #ffffff;
+    border-radius: 16px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+    animation: fadeIn 0.5s ease-in-out;
+    width: 100%;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Form Heading */
+.order-heading {
+    text-align: center;
+    color: #34495e;
+    font-weight: 700;
+    margin-bottom: 1rem;
+    font-size: 1.6rem;
+}
+
+.form-section {
+    border-top: 1px solid #e0e0e0;
+    padding-top: 1.5rem;
+    margin-top: 1.5rem;
+}
+
+.section-heading {
+    color: #4a7eb1;
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+}
+
+/* Form Group and Labels */
+.form-group {
+    position: relative;
+    margin-bottom: 1.2rem;
+}
+
+input[type="text"],
+input[type="number"],
+input[type="tel"],
+input[type="date"],
+select {
+    width: 100%;
+    padding: 1rem;
+    border: 1px solid #ced6e0;
+    border-radius: 8px;
+    font-size: 1rem;
+    background-color: #f9f9f9;
+    font-weight: bold;
+    color: #34495e;
+}
+
+input:focus, select:focus {
+    border-color: #4a7eb1;
+    box-shadow: 0 0 8px rgba(74, 126, 177, 0.3);
+    outline: none;
+}
+
+/* Floating Labels */
+.form-group label {
+    position: absolute;
+    top: 50%;
+    left: 1rem;
+    color: #888;
+    font-size: 0.9rem;
+    pointer-events: none;
+    transform: translateY(-50%);
+    transition: all 0.3s;
+}
+
+input:focus + label, input:not(:placeholder-shown) + label,
+select:focus + label, select:not(:placeholder-shown) + label {
+    top: 0;
+    font-size: 0.8rem;
+    color: #4a7eb1;
+    background: #ffffff;
+    padding: 0 0.3rem;
+}
+
+/* Checkbox Group */
+.checkbox-group {
+    margin-top: 1rem;
+    font-size: 1rem;
+    color: #2c3e50;
+    font-weight: 500;
+}
+
+.checkbox-group input {
+    margin-right: 0.5rem;
+}
+
+/* Button Styling */
+.add-item-button, .submit-button {
+    width: 100%;
+    padding: 0.9rem;
+    font-size: 1.1rem;
+    color: #ffffff;
+    background-color: #4a7eb1;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: bold;
+    margin-top: 1.2rem;
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+.add-item-button:hover, .submit-button:hover {
+    background-color: #3b6691;
+    transform: translateY(-2px);
+}
+
+/* Sauce Options */
+.sauce-options {
+    margin-top: 1rem;
+    font-size: 1rem;
+    color: #2c3e50;
+    font-weight: 500;
+}
+
+.sauce-options label {
+    display: block;
+    margin-bottom: 0.5rem;
+}
+
+/* Payment Notice */
+.payment-notice {
+    color: #d9534f;
+    font-weight: bold;
+    text-align: center;
+    margin: 1.5rem 0;
+    font-size: 1rem;
+}
+
+/* Subtotal Container */
+#subtotal-container {
+    text-align: center;
+    font-size: 1.1rem;
+    font-weight: bold;
+    color: #34495e;
+    margin-top: 1.5rem;
+}
+
+/* Confirmation Message */
+#confirmation-message {
+    display: none;
+    color: green;
+    font-weight: bold;
+    margin-top: 1rem;
+    text-align: center;
+}
+
+/* Error Message */
+#error-message {
+    color: red;
+    font-weight: bold;
+    margin-top: 1rem;
+    text-align: center;
+}
+
+/* Add Item Button */
+.add-item-button {
+    width: 100%;
+    padding: 1rem;
+    font-size: 1.1rem;
+    color: #fff;
+    background-color: #4a7eb1;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    margin-top: 1rem;
+    transition: background-color 0.3s ease;
+}
+
+.add-item-button:hover {
+    background-color: #3b6691;
+}
+
+/* Item Container */
+#order-items-container .order-item {
+    border-bottom: 1px solid #e0e0e0;
+    padding-bottom: 1.5rem;
+    margin-bottom: 1.5rem;
+}
+
+/* Validation Error Style */
+input:invalid, select:invalid {
+    border-color: #e74c3c;
+}
+
+input:invalid:focus, select:invalid:focus {
+    box-shadow: 0 0 5px rgba(231, 76, 60, 0.5);
+}
+
+/* Mobile-Friendly Styles */
+@media (max-width: 768px) {
+    .order-form {
+        padding: 1.5rem;
+    }
+
+    .order-heading {
+        font-size: 1.5rem;
+    }
+
+    label,
+    input,
+    select,
+    .add-item-button,
+    .submit-button {
+        font-size: 1rem;
+    }
+
+    .sauce-options {
+        flex-direction: column;
+    }
+
+    .checkbox-group {
+        font-size: 0.9rem;
+    }
+
+    .payment-notice {
+        font-size: 0.9rem;
+    }
+
+    #subtotal-container {
+        font-size: 1rem;
+    }
+
+    .add-item-button {
+        font-size: 1rem;
+        padding: 1rem;
+    }
+
+    /* Adjust the select box and input widths */
+    input[type="text"],
+    input[type="number"],
+    input[type="tel"],
+    input[type="date"],
+    select {
+        font-size: 0.9rem;
+        padding: 0.8rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .order-form {
+        padding: 1rem;
+    }
+
+    .order-heading {
+        font-size: 1.3rem;
+    }
+
+    .form-group label {
+        font-size: 0.85rem;
+    }
+
+    label,
+    input,
+    select,
+    .add-item-button,
+    .submit-button {
+        font-size: 0.9rem;
+    }
+
+    .add-item-button {
+        font-size: 0.9rem;
+        padding: 0.8rem;
+    }
+
+    .sauce-options {
+        margin-top: 1rem;
+    }
+}

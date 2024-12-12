@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <title>Order Form</title>
+    <link rel="stylesheet" href="body {.css">
+</head>
+<body>
+
+
+    <form id="order-form" class="order-form">
+        <div>
+            <label for="customer-name">Your Name:</label>
+            <input type="text" id="customer-name" name="customer-name" required>
+        </div>
+     <!-- Checkbox to toggle company order -->
+<div>
+    <input type="checkbox" id="company-order" onclick="toggleCompanyNumberField()">
+    <label for="company-order">Is this order for a company Number if yess click here?</label>
+</div>
+
+<!-- Company number input field, initially hidden -->
+<div id="company-number-field" style="display: none;">
+    <label for="company-number">Company Number:</label>
+    <input type="number" id="company-number" name="company-number">
+</div>
+
+<!-- Contact number input field -->
+<div>
+    <label for="contact-number">Contact Number:</label>
+    <input type="number" id="contact-number" name="contact-number" required pattern="[0-9]{10,15}" title="Please enter a valid phone number (10-15 digits)">
+</div>
+       
+        
+        
+        <div id="order-items-container">
+            <div class="order-item">
+                <label for="item-name-0">Item Name:</label>
+                <input type="text" id="item-name-0" name="item-name[]" readonly>
+
+                <label for="item-price-0">Price:</label>
+                <input type="text" id="item-price-0" name="item-price[]" readonly>
+
+                <label for="quantity-0">Quantity:</label>
+                <input type="number" id="quantity-0" name="quantity[]" min="1" value="1" required onchange="recalculateSubtotal()">
+
+                <label>Choose Your Sauce(s):</label>
+                <div class="sauce-options">
+                    <label><input type="checkbox" name="sauce[0][]" value="Ketchup"> Ketchup</label>
+                    <label><input type="checkbox" name="sauce[0][]" value="Mayonnaise"> Mayonnaise</label>
+                    <label><input type="checkbox" name="sauce[0][]" value="Chili"> Chili</label>
+                    <label><input type="checkbox" name="sauce[0][]" value="Non"> Non</label>
+                </div>
+
+                <label for="pickup-date-0">Pickup Date:</label>
+                <input type="date" id="pickup-date-0" name="pickup-date" required min="2024-11-06" oninput="validateDate(this)">
+
+                <label for="pickup-time-0">Preferred Pickup Time:</label>
+                <select id="pickup-time-0" name="pickup-time" required>
+                    <option value="">--Select a time--</option>
+                    <option value="09:00">09:00</option>
+                    <option value="09:30">09:30</option>
+                    <option value="10:00">10:00</option>
+                    <option value="10:30">10:30</option>
+                    <option value="11:00">11:00</option>
+                    <option value="11:30">11:30</option>
+                    <option value="12:00">12:00</option>
+                    <option value="12:30">12:30</option>
+                    <option value="13:00">13:00</option>
+                    <option value="13:30">13:30</option>
+                    <option value="14:00">14:00</option>
+                    <option value="14:30">14:30</option>
+                    <option value="15:00">15:00</option>
+                    <option value="15:30">15:30</option>
+                    <option value="16:00">16:00</option>
+                    <option value="16:30">16:30</option>
+                    <option value="17:00">17:00</option>
+                </select>
+            </div>
+        </div>
+
+        <button type="button" onclick="addAnotherItem()">Add Another Item</button>
+        <form id="order-form" class="order-form" action="submit_order.php" method="POST">
+            <!-- Form fields here (same as before) -->
+        <button type="submit">Place Order</button>
+
+
+        <div class="payment-notice">
+            <p><strong>Note:</strong> Payment is only accepted in cash upon pickup.</p>
+            <p><strong>We are closed on Sundays.</strong></p>
+        </div>
+
+        <div id="subtotal-container">
+            <p><strong>Subtotal: </strong><span id="subtotal">RS 0</span></p>
+        </div>
+
+        <div id="confirmation-message" style="display: none; color: green; font-weight: bold; margin-top: 1rem;"></div>
+    </form>
+
+    <script>
+        const urlParams = new URLSearchParams(window.location.search);
+        const itemName = urlParams.get('item');
+        const itemPrice = urlParams.get('price');
+
+        const orderItemsContainer = document.getElementById('order-items-container');
+        const subtotalElement = document.getElementById('subtotal');
+        const confirmationMessage = document.getElementById('confirmation-message');
+        const orderForm = document.getElementById('order-form');
+        let itemCount = 1; // Counter for item index
+        let subtotal = 0;  // Variable to store subtotal
+
+        function populateFirstItem() {
+            if (itemName && itemPrice) {
+                const firstItemNameInput = document.getElementById('item-name-0');
+                const firstItemPriceInput = document.getElementById('item-price-0');
+                firstItemNameInput.value = itemName;
+                firstItemPriceInput.value = itemPrice;
+                
+                recalculateSubtotal(); // Calculate subtotal initially
+            }
+        }
+         // Function to toggle the visibility of the company number field
+    // and make the contact number optional if it's a company order
+    function toggleCompanyNumberField() {
+        const companyNumberField = document.getElementById('company-number-field');
+        const companyOrderCheckbox = document.getElementById('company-order');
+        const contactNumberField = document.getElementById('contact-number');
+        
+        if (companyOrderCheckbox.checked) {
+            companyNumberField.style.display = 'block';  // Show company number field
+            contactNumberField.removeAttribute('required');  // Make contact number optional
+        } else {
+            companyNumberField.style.display = 'none';  // Hide company number field
+            contactNumberField.setAttribute('required', 'true');  // Make contact number required
+        }
+    }
+
+        function addAnotherItem() {
+            const newOrderItem = document.createElement('div');
+            newOrderItem.classList.add('order-item');
+            
+            newOrderItem.innerHTML = `
+                <label for="item-select-${itemCount}">Select Item:</label>
+                <select id="item-select-${itemCount}" onchange="updateItemDetails(${itemCount})">
+                    <option value="">--Select an item--</option>
+                    <option value="Beef Plate|RS 325">Beef (chips, salad & bread) - RS 325</option>
+                    <option value="Agneau plate|RS 425">Agneau (Lamb) (chips, salad & bread) - RS 425</option>
+                    <option value="Hotdog plate|RS 175">Hot Dog (chips, salad & bread) - RS 175</option>
+                    <option value="Fillet plate|RS 210">Chicken Leg (chips, salad & bread) - RS 210</option>
+                    <option value="Fish plate|RS 275">Fish (chips, salad, lemon & bread) - RS 275</option>
+                    <option value="Brochette|RS 200">CH Brochette (salad & bread) - RS 200</option>
+                </select>
+
+                <label for="item-name-${itemCount}">Item Name:</label>
+                <input type="text" id="item-name-${itemCount}" name="item-name[]" readonly>
+
+                <label for="item-price-${itemCount}">Price:</label>
+                <input type="text" id="item-price-${itemCount}" name="item-price[]" readonly>
+
+                <label for="quantity-${itemCount}">Quantity:</label>
+                <input type="number" id="quantity-${itemCount}" name="quantity[]" min="1" value="1" required onchange="recalculateSubtotal()">
+                
+                <label>Choose Your Sauce(s):</label>
+                <div class="sauce-options">
+                    <label><input type="checkbox" name="sauce[${itemCount}][]" value="Ketchup"> Ketchup</label>
+                    <label><input type="checkbox" name="sauce[${itemCount}][]" value="Mayonnaise"> Mayonnaise</label>
+                    <label><input type="checkbox" name="sauce[${itemCount}][]" value="Chili"> Chili</label>
+                </div>
+            `;
+
+            orderItemsContainer.appendChild(newOrderItem);
+            itemCount++; // Increment the counter for the next item
+        }
+
+        function updateItemDetails(itemIndex) {
+            const selectedItem = document.getElementById(`item-select-${itemIndex}`).value;
+            if (selectedItem) {
+                const [name, price] = selectedItem.split('|');
+                document.getElementById(`item-name-${itemIndex}`).value = name;
+                document.getElementById(`item-price-${itemIndex}`).value = price;
+            }
+            recalculateSubtotal();
+        }
+
+        function recalculateSubtotal() {
+            subtotal = 0; // Reset subtotal
+
+            for (let i = 0; i < itemCount; i++) {
+                const quantityInput = document.getElementById(`quantity-${i}`);
+                const priceInput = document.getElementById(`item-price-${i}`);
+
+                if (quantityInput && priceInput) {
+                    const quantity = parseInt(quantityInput.value) || 0;
+                    const priceText = priceInput.value.replace('RS ', '');
+                    const price = parseFloat(priceText) || 0;
+                    subtotal += price * quantity;
+                }
+            }
+
+            subtotalElement.innerText = `RS ${subtotal.toFixed(2)}`; // Update subtotal display
+        }
+
+        function validateDate(input) {
+            const date = new Date(input.value);
+            if (date.getDay() === 0) { // 0 represents Sunday
+                alert("We are closed on Sundays. Please choose another day.");
+                input.value = ''; // Clear the input
+            }
+        }
+
+        // Handle form submission
+        orderForm.addEventListener("submit", function(event) {
+            event.preventDefault();
+
+            const customerName = document.getElementById("customer-name").value;
+            confirmationMessage.innerText = `Thank you, ${customerName}! Your order has been confirmed. Your total is RS ${subtotal.toFixed(2)}. We’ll contact you within 5 minutes.`;
+            confirmationMessage.style.display = "block"; // Show the confirmation message
+        });
+
+        // Populate the first item on load
+        populateFirstItem();
+    </script>
+</body>
+</html>
