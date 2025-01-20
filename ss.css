@@ -20,35 +20,57 @@ body, html {
   overflow-x: hidden; /* Prevent any horizontal overflow */
 }
 /* Navigation Menu */
+.logo-container {
+  display: flex;
+  align-items: center ;
+  gap: 10px;
+}
+
+.logo-img {
+  max-height: 120px; /* Limit the height of the logo */
+  width: auto; /* Maintain the aspect ratio */
+  object-fit: contain; /* Ensure the logo doesn't distort */
+}
+
+.logo-text {
+  font-size: 18px; /* Adjust text size to match smaller logo */
+  margin-left: 8px;
+  color: #fff;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 .home {
   background-color: orange;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   position: fixed;
   width: 100%;
   top: 0;
-  left: 0; /* Ensure it starts at the left edge */
   z-index: 1000;
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 10px 20px;
+  height: 60px;
+  overflow: hidden; /* Prevent layout issues */
+  margin: 0; /* Ensure no margin around the navbar */
+  left: 0; /* Ensure it starts from the very left edge */
 }
 
-.logo-container {
-  display: flex;
-  align-items: center;
-}
-
-.logo-img {
-  max-width: 50px;
-  height: auto;
-}
-
-.logo-text {
-  margin-left: 10px;
-  font-size: 24px;
-  color: #fff;
-}
 
 /* Nav Links */
 .nav-links {
